@@ -1,0 +1,20 @@
+# Use Ubuntu LTS as base image
+FROM ubuntu:22.04
+
+# Update the package list
+RUN apt-get update
+
+# Install Apache and Kerberos authentication module
+RUN apt-get update && \
+    apt-get install -y apache2 libapache2-mod-auth-gssapi
+
+# Enable necessary Apache modules
+RUN a2enmod auth_gssapi
+
+# Copy the Apache configuration file and Kerberos configuration if needed
+COPY apache-kerberos.conf /etc/apache2/sites-available/000-default.conf
+COPY --chown=www-data:www-data http.keytab /etc/apache2/http.keytab
+COPY krb5.conf /etc/krb5.conf
+
+# Set the default entrypoint
+CMD ["apache2ctl", "-D", "FOREGROUND"]

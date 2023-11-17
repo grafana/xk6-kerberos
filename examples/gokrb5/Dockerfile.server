@@ -1,0 +1,27 @@
+# Use Ubuntu LTS as base image
+FROM ubuntu:22.04
+
+# Update the package list
+RUN apt-get update
+
+# Install Kerberos server packages
+RUN apt-get install -y krb5-kdc krb5-admin-server
+
+# Set the default entrypoint
+ENTRYPOINT ["/opt/krb5/bin/start.sh"]
+
+# Copy the Kerberos configuration file
+COPY krb5.conf /etc/krb5.conf
+
+# Copy the Kerberos ACL configuration file
+COPY kadm5.acl /etc/krb5kdc/kadm5.acl
+
+# Copy the initialization script (it creates the Kerberos database, etc)
+COPY krb5kdc-init.sh /opt/krb5/bin/krb5kdc-init.sh
+
+# Copy the start script (it starts the Kerberos services)
+COPY start.sh /opt/krb5/bin/start.sh
+
+# Make the start script executable
+RUN chmod 744 /opt/krb5/bin/start.sh && \
+    /bin/bash /opt/krb5/bin/krb5kdc-init.sh \
