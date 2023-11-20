@@ -1,11 +1,9 @@
-# Use Ubuntu LTS as base image
-FROM ubuntu:22.04
+# Use Alpine as base image
+FROM alpine:3.18
 
-# Update the package list
-RUN apt-get update
-
-# Install Kerberos server packages
-RUN apt-get install -y krb5-kdc krb5-admin-server
+# Install Kerberos packages
+RUN apk update && \
+    apk add krb5-server
 
 # Set the default entrypoint
 ENTRYPOINT ["/opt/krb5/bin/start.sh"]
@@ -24,4 +22,4 @@ COPY start.sh /opt/krb5/bin/start.sh
 
 # Make the start script executable
 RUN chmod 744 /opt/krb5/bin/start.sh && \
-    /bin/bash /opt/krb5/bin/krb5kdc-init.sh \
+    /bin/sh /opt/krb5/bin/krb5kdc-init.sh \

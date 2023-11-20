@@ -1,3 +1,5 @@
+#!/bin/sh
+
 REALM=EXAMPLE.COM
 
 USERNAME=testuser
