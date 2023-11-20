@@ -1,7 +1,7 @@
 import http from 'k6/http';
 import exec from 'k6/execution';
-import { fs } from 'k6/experimental/fs';
-import { krb5 } from 'k6/x/kerberos';
+import { open } from "k6/experimental/fs";
+import { Client } from 'k6/x/kerberos';
 
 export const options = {
   iterations: 1,
@@ -18,32 +18,32 @@ var users = [{
 const	spn = "HTTP/http.example.com"
 const	realm = "EXAMPLE.COM"
 
-const cfg;
+let cfg;
 (async function () {
-	cfg = await open("krb5.ini"); // TODO: replace with a env var
+	cfg = await open("./gokrb5/krb5.conf"); // TODO: replace with a env var
 })();
 
-let session = null;
+let session;
 
-export default function () {
+export default async function () {
   if (session == null) {
     const user = users[exec.vu.idInTest];
-    const krb5ini = readAll(cfg);
-    const kos = new Client(cfg);
+    const krb5ini = await readAll(cfg);
+    const kos = new Client(krb5ini);
     const token = kos.authenticate(user.username, user.password, spn);
     session = token.NegotiateHeader()
   }
 
   let headers = {Authorization: session};
-  const res = http.get('https://test.k6.io', headers);
+  const res = http.get('http://localhost:3939/myservice', headers);
 }
 
-func readAll(file) {
+async function readAll(file) {
 	const buffer = new Uint8Array(4);
 
   let totalBytesRead = 0;
 	while (true) {
-		const bytesRead = await file.read(buffer);
+		let bytesRead = await file.read(buffer);
 		if (bytesRead == null) {
 			// EOF
 			break;
@@ -57,7 +57,7 @@ func readAll(file) {
 		}
 	}
 
-	if totalByteRead === 0 {
+	if (totalBytesRead.length === 0) {
 	  return null;
 	}
 

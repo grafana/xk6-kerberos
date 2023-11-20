@@ -19,7 +19,7 @@ type Client struct {
 	vu     modules.VU
 }
 
-func (c Client) authenticate(user, password, spn string) (string, error) {
+func (c *Client) Authenticate(user, password, spn string) (string, error) {
 	if c.vu.State() == nil {
 		return "", fmt.Errorf("is not allowed to be used outside of the VU context")
 	}
