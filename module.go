@@ -1,9 +1,14 @@
 package kerberos
 
 import (
-	"go.k6.io/k6/js/modules"
+	"bytes"
+	"errors"
+	"fmt"
 
-	_ "github.com/jcmturner/gokrb5/v8/spnego"
+	"github.com/dop251/goja"
+	"github.com/jcmturner/gokrb5/v8/config"
+	"go.k6.io/k6/js/common"
+	"go.k6.io/k6/js/modules"
 )
 
 // init is called by the Go runtime at application startup.
@@ -42,9 +47,33 @@ func (*RootModule) NewModuleInstance(vu modules.VU) modules.Instance {
 }
 
 func (mi *ModuleInstance) Exports() modules.Exports {
-	return modules.Exports{
-		Default: func() string {
-			return "not yet implemented"
-		},
+	return modules.Exports{Named: map[string]interface{}{
+		"Client": mi.NewClient,
+	}}
+}
+
+// NewClient is the JS constructor for the Kerberos client.
+func (mi *ModuleInstance) NewClient(call goja.ConstructorCall) *goja.Object {
+	rt := mi.vu.Runtime()
+
+	if len(call.Arguments) != 1 {
+		common.Throw(rt, errors.New("must specify one argument"))
 	}
+
+	buf, err := toBuffer(mi.vu.Runtime(), call.Arguments[0])
+	if err != nil {
+		common.Throw(rt, fmt.Errorf("failed to parse argument as expected ArrayBuffer: %w", err))
+	}
+
+	cfg, err := config.NewFromReader(bytes.NewReader(buf))
+	if err != nil {
+		common.Throw(rt, fmt.Errorf("failed to parse a error: %w", err))
+	}
+
+	client := &Client{
+		vu:     mi.vu,
+		config: cfg,
+	}
+
+	return rt.ToValue(client).ToObject(rt)
 }
