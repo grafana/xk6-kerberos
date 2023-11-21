@@ -1,10 +1,14 @@
-import {check} from 'k6';
 import http from 'k6/http';
 import {open} from "k6/experimental/fs";
 import {Client} from 'k6/x/kerberos';
+import {describe, expect} from 'https://jslib.k6.io/k6chaijs/4.3.4.3/index.js';
+
 
 export const options = {
-	iterations: 1,
+	thresholds: {
+		checks: [{threshold: 'rate == 1.00', abortOnFail: true}],
+		http_req_failed: [{threshold: 'rate == 0.00', abortOnFail: true}],
+	},
 };
 
 const user = "testuser"
@@ -28,10 +32,12 @@ export default async function () {
 		session = token.negotiateHeader()
 	}
 
-	let headers = {Authorization: session};
-	const res = http.get('http://http.example.com', headers);
-	check(res, {
-		'is status 200': (r) => r.status === 200,
+	describe('Authenticated request', () => {
+		let headers = {Authorization: session};
+		const res = http.get('http://http.example.com', headers);
+
+		expect(res.status, 'response status').to.equal(200);
+		expect(res.body, 'response body').to.include("It works!");
 	});
 }
 
