@@ -14,17 +14,17 @@ import (
 )
 
 type Client struct {
-	config *config.Config
-	realm  string
-	vu     modules.VU
+	config  *config.Config
+	kclient *client.Client
+	vu      modules.VU
 }
 
-func (c *Client) Authenticate(user, password, spn string) (string, error) {
+func (c *Client) Authenticate(spn string) (Token, error) {
 	if c.vu.State() == nil {
 		return "", fmt.Errorf("is not allowed to be used outside of the VU context")
 	}
-	kclient := client.NewWithPassword(user, c.realm, password, c.config)
-	s := spnego.SPNEGOClient(kclient, spn)
+
+	s := spnego.SPNEGOClient(c.kclient, spn)
 	if err := s.AcquireCred(); err != nil {
 		return "", err
 	}
@@ -39,7 +39,7 @@ func (c *Client) Authenticate(user, password, spn string) (string, error) {
 		return "", err
 	}
 
-	return base64.StdEncoding.EncodeToString(nb), nil
+	return Token(base64.StdEncoding.EncodeToString(nb)), nil
 }
 
 type Token string
