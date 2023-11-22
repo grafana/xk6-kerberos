@@ -1,9 +1,16 @@
 package kerberos
 
 import (
-	"go.k6.io/k6/js/modules"
+	"bytes"
+	"errors"
+	"fmt"
 
-	_ "github.com/jcmturner/gokrb5/v8/spnego"
+	"github.com/dop251/goja"
+	"github.com/jcmturner/gokrb5/v8/client"
+	"github.com/jcmturner/gokrb5/v8/config"
+
+	"go.k6.io/k6/js/common"
+	"go.k6.io/k6/js/modules"
 )
 
 // init is called by the Go runtime at application startup.
@@ -42,9 +49,40 @@ func (*RootModule) NewModuleInstance(vu modules.VU) modules.Instance {
 }
 
 func (mi *ModuleInstance) Exports() modules.Exports {
-	return modules.Exports{
-		Default: func() string {
-			return "not yet implemented"
-		},
+	return modules.Exports{Named: map[string]interface{}{
+		"Client": mi.newClient,
+	}}
+}
+
+// newClient is the JS constructor for the Kerberos client.
+func (mi *ModuleInstance) newClient(call goja.ConstructorCall) *goja.Object {
+	rt := mi.vu.Runtime()
+
+	if len(call.Arguments) != 4 {
+		common.Throw(rt, errors.New("must specify four arguments"))
 	}
+
+	user := call.Arguments[0].String()
+	realm := call.Arguments[1].String()
+	pass := call.Arguments[2].String()
+
+	buf, err := toBuffer(mi.vu.Runtime(), call.Arguments[3])
+	if err != nil {
+		common.Throw(rt, fmt.Errorf("failed to parse argument as expected ArrayBuffer: %w", err))
+	}
+
+	cfg, err := config.NewFromReader(bytes.NewReader(buf))
+	if err != nil {
+		common.Throw(rt, fmt.Errorf("failed to parse a error: %w", err))
+	}
+
+	kclient := client.NewWithPassword(user, realm, pass, cfg)
+
+	c := &Client{
+		vu:      mi.vu,
+		kclient: kclient,
+		config:  cfg,
+	}
+
+	return rt.ToValue(c).ToObject(rt)
 }
