@@ -41,13 +41,16 @@ func New() *RootModule {
 	return &RootModule{}
 }
 
-// NewModuleInstance implements the modules.Module interface returning a new instance for each VU.
+// NewModuleInstance implements the modules.Module interface returning a new
+// instance for each VU.
 func (*RootModule) NewModuleInstance(vu modules.VU) modules.Instance {
 	return &ModuleInstance{
 		vu: vu,
 	}
 }
 
+// Exports implements the [modules.Instance] interface and returns the exports
+// of the JS module.
 func (mi *ModuleInstance) Exports() modules.Exports {
 	return modules.Exports{Named: map[string]interface{}{
 		"Client": mi.newClient,
