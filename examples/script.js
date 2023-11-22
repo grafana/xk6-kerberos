@@ -9,29 +9,34 @@ export const options = {
   iterations: 1,
 };
 
-// Add here more users if required
+// Add your users here
 var users = [{
   username: "testuser",
   password: "testpwd",
 }];
 
-const	spn = "HTTP/http.example.com"
+// Set your domain
+const	service = "HTTP/http.example.com"
 const	realm = "EXAMPLE.COM"
 
+// Load the Kerberos configuration file
 let cfg;
 (async function () {
-	cfg = await open("./gokrb5/krb5.conf");
+  // It is better to read from an env variable
+  // https://k6.io/docs/using-k6/environment-variables
+	cfg = await open("/home/k6/krb5.conf");
 })();
 
 let session;
 
 export default async function () {
+  // We want a unique session for each single VU.
   if (session == null) {
     const user = users[(exec.vu.idInTest-1) % users.length];
     const krb5ini = await readAll(cfg);
 
     const kbClient = new UserClient(krb5ini, user.username, user.password, realm);
-    const token = kbClient.authenticate(spn);
+    const token = kbClient.authenticate(service);
     session = token.negotiateHeader();
   }
 
