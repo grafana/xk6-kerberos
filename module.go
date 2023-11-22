@@ -50,7 +50,7 @@ func (*RootModule) NewModuleInstance(vu modules.VU) modules.Instance {
 
 func (mi *ModuleInstance) Exports() modules.Exports {
 	return modules.Exports{Named: map[string]interface{}{
-		"Client": mi.newClient,
+		"UserClient": mi.newClient,
 	}}
 }
 
@@ -58,30 +58,39 @@ func (mi *ModuleInstance) Exports() modules.Exports {
 func (mi *ModuleInstance) newClient(call goja.ConstructorCall) *goja.Object {
 	rt := mi.vu.Runtime()
 
-	if len(call.Arguments) != 4 {
-		common.Throw(rt, errors.New("must specify four arguments"))
+	if len(call.Arguments) < 3 {
+		common.Throw(rt, errors.New("configuration, username and password are required arguments"))
 	}
 
-	user := call.Arguments[0].String()
-	realm := call.Arguments[1].String()
-	pass := call.Arguments[2].String()
+	user := call.Arguments[1].String()
+	if user == "" {
+		common.Throw(rt, errors.New("username cannot be empty"))
+	}
 
-	buf, err := toBuffer(mi.vu.Runtime(), call.Arguments[3])
+	pass := call.Arguments[2].String()
+	if user == "" {
+		common.Throw(rt, errors.New("password cannot be empty"))
+	}
+
+	var realm string
+	if len(call.Arguments) == 4 {
+		realm = call.Arguments[3].String()
+	}
+
+	buf, err := toBuffer(mi.vu.Runtime(), call.Arguments[0])
 	if err != nil {
-		common.Throw(rt, fmt.Errorf("failed to parse argument as expected ArrayBuffer: %w", err))
+		common.Throw(rt, fmt.Errorf("failed to parse configuration argument as expected ArrayBuffer: %w", err))
 	}
 
 	cfg, err := config.NewFromReader(bytes.NewReader(buf))
 	if err != nil {
-		common.Throw(rt, fmt.Errorf("failed to parse a error: %w", err))
+		common.Throw(rt, fmt.Errorf("failed to load the configuration: %w", err))
 	}
-
-	kclient := client.NewWithPassword(user, realm, pass, cfg)
 
 	c := &Client{
 		vu:      mi.vu,
-		kclient: kclient,
 		config:  cfg,
+		kclient: client.NewWithPassword(user, realm, pass, cfg),
 	}
 
 	return rt.ToValue(c).ToObject(rt)

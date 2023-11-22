@@ -26,17 +26,17 @@ func (c *Client) Authenticate(spn string) (Token, error) {
 
 	s := spnego.SPNEGOClient(c.kclient, spn)
 	if err := s.AcquireCred(); err != nil {
-		return "", err
+		return "", fmt.Errorf("acquiring credentials: %w", err)
 	}
 
 	st, err := s.InitSecContext()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("init sec context: %w", err)
 	}
 
 	nb, err := st.Marshal()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("session token marshal: %w", err)
 	}
 
 	return Token(base64.StdEncoding.EncodeToString(nb)), nil
