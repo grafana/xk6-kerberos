@@ -6,7 +6,9 @@ import (
 	"fmt"
 
 	"github.com/dop251/goja"
+	"github.com/jcmturner/gokrb5/v8/client"
 	"github.com/jcmturner/gokrb5/v8/config"
+
 	"go.k6.io/k6/js/common"
 	"go.k6.io/k6/js/modules"
 )
@@ -48,19 +50,23 @@ func (*RootModule) NewModuleInstance(vu modules.VU) modules.Instance {
 
 func (mi *ModuleInstance) Exports() modules.Exports {
 	return modules.Exports{Named: map[string]interface{}{
-		"Client": mi.NewClient,
+		"Client": mi.newClient,
 	}}
 }
 
-// NewClient is the JS constructor for the Kerberos client.
-func (mi *ModuleInstance) NewClient(call goja.ConstructorCall) *goja.Object {
+// newClient is the JS constructor for the Kerberos client.
+func (mi *ModuleInstance) newClient(call goja.ConstructorCall) *goja.Object {
 	rt := mi.vu.Runtime()
 
-	if len(call.Arguments) != 1 {
-		common.Throw(rt, errors.New("must specify one argument"))
+	if len(call.Arguments) != 4 {
+		common.Throw(rt, errors.New("must specify four arguments"))
 	}
 
-	buf, err := toBuffer(mi.vu.Runtime(), call.Arguments[0])
+	user := call.Arguments[0].String()
+	realm := call.Arguments[1].String()
+	pass := call.Arguments[2].String()
+
+	buf, err := toBuffer(mi.vu.Runtime(), call.Arguments[3])
 	if err != nil {
 		common.Throw(rt, fmt.Errorf("failed to parse argument as expected ArrayBuffer: %w", err))
 	}
@@ -70,10 +76,13 @@ func (mi *ModuleInstance) NewClient(call goja.ConstructorCall) *goja.Object {
 		common.Throw(rt, fmt.Errorf("failed to parse a error: %w", err))
 	}
 
-	client := &Client{
-		vu:     mi.vu,
-		config: cfg,
+	kclient := client.NewWithPassword(user, realm, pass, cfg)
+
+	c := &Client{
+		vu:      mi.vu,
+		kclient: kclient,
+		config:  cfg,
 	}
 
-	return rt.ToValue(client).ToObject(rt)
+	return rt.ToValue(c).ToObject(rt)
 }
