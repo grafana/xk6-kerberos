@@ -1,0 +1,13 @@
+name: Build and test
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  pull_request:
+
+jobs:
+  checks:
+    uses: grafana/k6-ci/.github/workflows/all.yml@main
