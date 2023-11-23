@@ -25,14 +25,14 @@ let cfg;
 let session;
 
 export default async function () {
-	if (session == null) {
-		const krb5ini = await readAll(cfg);
-		const kos = new Client(user, realm, pass, krb5ini);
-		const token = kos.authenticate(spn);
-		session = token.negotiateHeader()
-	}
+	describe('Authenticated request', async () => {
+		if (session == null) {
+			const krb5ini = await readAll(cfg);
+			const kos = new Client(user, realm, pass, krb5ini);
+			const token = kos.authenticate(spn);
+			session = token.negotiateHeader()
+		}
 
-	describe('Authenticated request', () => {
 		let headers = {Authorization: session};
 		const res = http.get('http://http.example.com', headers);
 
