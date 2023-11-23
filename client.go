@@ -33,17 +33,17 @@ func (c *Client) Authenticate(spn string) (Token, error) {
 
 	s := spnego.SPNEGOClient(c.kclient, spn)
 	if err := s.AcquireCred(); err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to acquire credentials: %w", err)
 	}
 
 	st, err := s.InitSecContext()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get a service ticket: %w", err)
 	}
 
 	nb, err := st.Marshal()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to marshal the returned SPNEGO token: %w", err)
 	}
 
 	return Token(base64.StdEncoding.EncodeToString(nb)), nil

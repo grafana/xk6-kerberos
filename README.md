@@ -1,6 +1,34 @@
 # xk6-kerberos
 
-k6 extension that adds support for Kerberos authentication protocol.
+k6 extension that adds support for [Kerberos](https://web.mit.edu/kerberos) authentication protocol.
+
+## Run the example
+
+[Docker Engine](https://docs.docker.com/engine), or a compatible alternative, is required. Please, make sure to have it installed before to start.
+
+Run locally the Kerberos' testing environment.
+
+```sh
+$ docker compose -f ./examples/gokrb5/docker-compose.yml up -d
+```
+
+Build a new k6 wit the Kerberos extension.
+
+```sh
+$ docker run --rm -v $(pwd):/xk6 \
+    grafana/xk6 build \
+    --with github.com/grafana/xk6-kerberos=.
+```
+
+Run the k6 test using the built binary.
+
+```sh
+docker run --rm -i \
+  --network gokrb5_default \
+  -v $(pwd)/k6:/usr/bin/k6 \
+  -v $(pwd)/examples/gokrb5/krb5.conf:/home/k6/krb5.conf \
+  grafana/k6:master run -<./examples/script.js
+```
 
 ## Development
 
