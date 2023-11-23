@@ -26,15 +26,10 @@ let session;
 
 export default async function () {
 	if (session == null) {
-		try {
-			const krb5ini = await readAll(cfg);
-			const kos = new Client(user, realm, pass, krb5ini);
-			const token = kos.authenticate(spn);
-			session = token.negotiateHeader();
-		} catch (e) {
-			console.log(e);
-			exec.test.abort("Failed to authenticate");
-		}
+		const krb5ini = await readAll(cfg);
+		const kos = new Client(user, realm, pass, krb5ini);
+		const token = kos.authenticate(spn);
+		session = token.negotiateHeader();
 	}
 
 	describe('Authenticated request', () => {
