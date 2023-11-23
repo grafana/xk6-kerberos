@@ -2,14 +2,11 @@ import http from 'k6/http';
 import {open} from "k6/experimental/fs";
 import {Client} from 'k6/x/kerberos';
 import {describe, expect} from 'https://jslib.k6.io/k6chaijs/4.3.4.3/index.js';
-
+import exec from 'k6/execution';
 
 export const options = {
 	thresholds: {
-		checks: [
-			{threshold: 'count > 0', abortOnFail: true},
-			{threshold: 'rate == 1.00', abortOnFail: true},
-		],
+		checks: [{threshold: 'rate == 1.00', abortOnFail: true}],
 		http_req_failed: [{threshold: 'rate == 0.00', abortOnFail: true}],
 	},
 };
@@ -28,14 +25,19 @@ let cfg;
 let session;
 
 export default async function () {
-	describe('Authenticated request', async () => {
-		if (session == null) {
+	if (session == null) {
+		try {
 			const krb5ini = await readAll(cfg);
 			const kos = new Client(user, realm, pass, krb5ini);
 			const token = kos.authenticate(spn);
-			session = token.negotiateHeader()
+			session = token.negotiateHeader();
+		} catch (e) {
+			console.log(e);
+			exec.test.abort("Failed to authenticate");
 		}
+	}
 
+	describe('Authenticated request', () => {
 		let headers = {Authorization: session};
 		const res = http.get('http://http.example.com', headers);
 
