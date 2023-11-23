@@ -30,13 +30,13 @@ Check the table below to see the expected argument
 When a client is initialized then it can be used for getting Kerberos service tickets.
 
 ```js
-const session = kbClient.authenticate(service);
+const token = client.authenticate(service);
 ```
 
 The `session` returned can be used for generating the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) header to pass to HTTP services.
 
 ```js
-const authzHeader = token.negotiateHeader();
+const header = token.negotiateHeader();
 ```
 
 It can be then used with the common `k6/http` client to submit authenticated requests to an HTTP service
