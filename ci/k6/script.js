@@ -6,7 +6,10 @@ import {describe, expect} from 'https://jslib.k6.io/k6chaijs/4.3.4.3/index.js';
 
 export const options = {
 	thresholds: {
-		checks: [{threshold: 'rate == 1.00', abortOnFail: true}],
+		checks: [
+			{threshold: 'count > 0', abortOnFail: true},
+			{threshold: 'rate == 1.00', abortOnFail: true},
+		],
 		http_req_failed: [{threshold: 'rate == 0.00', abortOnFail: true}],
 	},
 };
