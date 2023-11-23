@@ -4,7 +4,7 @@ k6 extension that adds support for [Kerberos](https://web.mit.edu/kerberos) auth
 
 ### JavaScript API
 
-The extension exports a `UserClient` type usable for authenticate users over a Kerberos-secured environment.
+The extension exports a `UserClient` type usable for authenticate a single user over a Kerberos-secured environment. Imports the library by its expected path `k6/x/kerberos`.
 
 ```js
 import { UserClient} `k6/x/kerberos`;
@@ -14,21 +14,41 @@ import { UserClient} `k6/x/kerberos`;
 The client is expected to be instantiated by invoking its constructor passing through the Kerberos configuration.
 
 ```js
-const kbClient = new UserClient(config, user.username, user.password, realm);
+const client = new UserClient(config, username, password, realm).
 
 ```
 
-```
-    const kbClient = new UserClient(krb5ini, user.username, user.password, realm);
-    const token = kbClient.authenticate(service);
-    session = token.negotiateHeader();
+Check the table below to see the expected argument
 
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| Configuration | ArrayBuffer | Yes | It contains the [Kerberos configuration](https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html). Typically available in defined `krb5.conf` file. |
+| Username      | string      | Yes | The user's username. |
+| Password      | string      | Yes | The user's password. |
+| Realm         | string      | No  | It is optional and the default value is an empty string. |
+
+When a client is initialized then it can be used for getting Kerberos service tickets.
+
+```js
+const session = kbClient.authenticate(service);
+```
+
+The `session` returned can be used for generating the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) header to pass to HTTP services.
+
+```js
+const authzHeader = token.negotiateHeader();
+```
+
+It can be then used with the common `k6/http` client to submit authenticated requests to an HTTP service
+
+```js
+  let headers = {Authorization: negotiateHeader};
+  http.get('http://test.k6.io', headers);
 ```
 
 ## Usage
 
 To being able to use xk6-kerberos extension is required to build a new k6 binary. A detailed guide how to do it via a Docker or Go environment is available on the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
-
 
 ## Example
 
