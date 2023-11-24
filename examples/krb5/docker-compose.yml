@@ -16,10 +16,3 @@ services:
     hostname: http.example.com
     depends_on:
       - kerberos-server
-
-  # Go app (for manual checks)
-  go-app:
-    build:
-      context: .
-      dockerfile: Dockerfile.app
-    command: tail -f /dev/null # keep container running
