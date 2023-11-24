@@ -1,21 +1,20 @@
 # xk6-kerberos
 
-k6 extension that adds support for [Kerberos](https://web.mit.edu/kerberos) authentication protocol. It adds a `k6/x/kerberos` JavaScript modules.
+k6 extension that adds support for [Kerberos](https://web.mit.edu/kerberos) authentication protocol. It adds a `k6/x/kerberos` JavaScript module.
 
 ### JavaScript API
 
-The extension exports a `UserClient` type usable for authenticate a single user over a Kerberos-secured environment. Imports the library by its expected path `k6/x/kerberos`.
+The extension exports a `UserClient` type usable for authenticating a single user over a Kerberos-secured environment. Imports the library by its expected path `k6/x/kerberos`.
 
 ```js
 import { UserClient} `k6/x/kerberos`;
 
 ```
 
-The client is expected to be instantiated by invoking its constructor passing through the Kerberos configuration and user credentials.
+The client is expected to be instantiated by invoking its constructor, passing through the Kerberos configuration and user credentials.
 
 ```js
 const client = new UserClient(config, username, password, realm).
-
 ```
 
 Check the table below to see the expected arguments:
@@ -25,30 +24,32 @@ Check the table below to see the expected arguments:
 | Configuration | ArrayBuffer | Yes | It contains the [Kerberos configuration](https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html). Typically available in defined `krb5.conf` file. |
 | Username      | string      | Yes | The user's username. |
 | Password      | string      | Yes | The user's password. |
-| Realm         | string      | No  | Optional. If not defined it uses the default realm from config. |
+| Realm         | string      | No  | Optional. If not defined, it uses the default realm from config. |
 
-When a client is initialized then it can be used for getting Kerberos service tickets.
+When a client is initialized, then it can be used to get Kerberos service tickets.
 
 ```js
 const token = client.authenticate(service);
 ```
 
-The `session` returned can be used for generating the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) header to pass to HTTP services.
+The returned `session` can be used to generate the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) header to pass to HTTP services.
 
 ```js
 const header = token.negotiateHeader();
 ```
 
-It can be then used with the common `k6/http` client to submit authenticated requests to an HTTP service
+It can be then used along the `k6/http` module to submit authenticated requests to an HTTP service.
 
 ```js
-  let headers = {Authorization: negotiateHeader};
-  http.get('http://test.k6.io', headers);
+import http from 'k6/http';
+
+let headers = {Authorization: negotiateHeader};
+http.get('http://test.k6.io', headers);
 ```
 
 ## Usage
 
-To use the xk6-kerberos extension, it is necessary to build a new k6 binary. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
+Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
 
 ## Example
 
@@ -56,7 +57,7 @@ In [examples/krb5](./examples/krb5) a [fully working testing environment](./exam
 
 ### How to run
 
-[Docker Engine](https://docs.docker.com/engine), or a compatible alternative, is required. Please, make sure to have it installed before to start.
+[Docker Engine](https://docs.docker.com/engine), or a compatible alternative, is required. Please make sure to have it installed before starting.
 
 Run locally the Kerberos' testing environment.
 
@@ -64,7 +65,7 @@ Run locally the Kerberos' testing environment.
 $ docker compose -f ./examples/gokrb5/docker-compose.yml up -d
 ```
 
-Build a new k6 wit the Kerberos extension.
+Build a new k6 binary incorporating the Kerberos extension.
 
 ```sh
 $ docker run --rm -v $(pwd):/xk6 \
@@ -91,7 +92,7 @@ To get help, report bugs, suggest features, and discuss k6 with others, refer to
 
 ## Contribute
 
-If you want to contribute or help with the development of xk6-kerberos, start by reading k6 [CONTRIBUTING.md](https://github.com/grafana/k6/blob/master/CONTRIBUTING.md). Before you start coding, it might be a good idea to first discuss your plans and implementation details with the k6 maintainers—especially when it comes to big changes and features. You can do this in the GitHub issue for the problem you're solving (create one if it doesn't exist).
+If you want to contribute or help with the development of xk6-kerberos, start by reading k6 [CONTRIBUTING.md](https://github.com/grafana/k6/blob/master/CONTRIBUTING.md).  Before you start coding, it might be a good idea to discuss your plans and implementation details with the k6 maintainers—especially regarding big changes and features. You can do this in the GitHub issue for the problem you're solving (create one if it doesn't exist).
 
 > [!NOTE]  
 > To disclose security issues, refer to k6 [SECURITY.md](https://github.com/grafana/k6/blob/master/SECURITY.md).
