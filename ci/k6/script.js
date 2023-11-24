@@ -19,7 +19,7 @@ const spn = "HTTP/http.example.com"
 
 let krb5cfg;
 (async function () {
-	krb5cfg = await open(${__ENV.KRB5_CONFIG}); // TODO: replace with a env var
+	krb5cfg = open(${__ENV.KRB5_CONFIG});
 })();
 
 let session;
