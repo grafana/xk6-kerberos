@@ -120,7 +120,7 @@ In [examples/krb5](./examples/krb5) a [fully working testing environment](./exam
 Run locally the Kerberos' testing environment.
 
 ```sh
-$ docker compose -f ./examples/gokrb5/docker-compose.yml up -d
+$ docker compose -f ./examples/krb5/docker-compose.yml up -d
 ```
 
 Build a new k6 binary incorporating the Kerberos extension.
@@ -138,9 +138,10 @@ Run the k6 test using the built binary.
 
 ```sh
 docker run --rm -i \
-  --network gokrb5_default \
+  --network krb5_default \
   -v $(pwd)/k6:/usr/bin/k6 \
-  -v $(pwd)/examples/gokrb5/krb5.conf:/home/k6/krb5.conf \
+  -v $(pwd)/examples/krb5/krb5.conf:/home/k6/krb5.conf \
+  -e KRB5_CONFIG=/home/k6/krb5.conf \
   grafana/k6:master run -<./examples/script.js
 ```
 
