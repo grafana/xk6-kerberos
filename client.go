@@ -65,15 +65,29 @@ func toBuffer(rt *goja.Runtime, v goja.Value) ([]byte, error) {
 	}
 
 	obj := v.ToObject(rt)
-
-	switch obj.Get("constructor") {
-	case rt.Get("Uint8Array"):
-		return obj.Get("buffer").Export().(goja.ArrayBuffer).Bytes(), nil
-	case rt.Get("ArrayBuffer"):
-		return v.Export().(goja.ArrayBuffer).Bytes(), nil
-	case rt.Get("String"):
-		return []byte(v.String()), nil
-	default:
-		return nil, errors.New("value must be either an ArrayBuffer or a String")
+	stringConstructor := rt.Get("String")
+	if isString := obj.Get("constructor").SameAs(stringConstructor); isString {
+		return []byte(obj.String()), nil
 	}
+
+	var array *goja.ArrayBuffer
+	uint8ArrayConstructor := rt.Get("Uint8Array")
+	if isUint8Array := obj.Get("constructor").SameAs(uint8ArrayConstructor); isUint8Array {
+		if v, ok := obj.Get("buffer").Export().(goja.ArrayBuffer); ok {
+			array = &v
+		}
+	}
+
+	arrayBufferConstructor := rt.Get("ArrayBuffer")
+	if isArrayBuffer := obj.Get("constructor").SameAs(arrayBufferConstructor); isArrayBuffer {
+		if v, ok := obj.Export().(goja.ArrayBuffer); ok {
+			array = &v
+		}
+	}
+
+	if array != nil {
+		return array.Bytes(), nil
+	}
+
+	return nil, errors.New("value must be either an ArrayBuffer or a String")
 }
