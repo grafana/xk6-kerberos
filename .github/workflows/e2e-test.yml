@@ -17,12 +17,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Build & run Kerberos server
         run: |
-          docker build -t kerberos-server -f ./ci/docker/Dockerfile.server ./ci/
+          docker build -t kerberos-server -f ./examples/krb5/Dockerfile.server ./examples/krb5/
           docker run -d -p 88:88 -p 88:88/udp -p 749:749 -p 749:749/udp --name kerberos-server kerberos-server
           echo "127.0.0.1 kerberos.example.com" | sudo tee -a /etc/hosts
       - name: Build & run Apache server
         run: |
-          docker build -t apache-server -f ./ci/docker/Dockerfile.apache ./ci/
+          docker build -t apache-server -f ./examples/krb5/Dockerfile.apache ./examples/krb5/
           docker run -d -p 80:80 --name apache-server apache-server
           echo "127.0.0.1 http.example.com" | sudo tee -a /etc/hosts
       - name: Set up Go
@@ -36,5 +36,8 @@ jobs:
             --output ./k6 \
             --with github.com/grafana/xk6-kerberos=.
       - name: Run k6 test
+        env:
+          KRB5_CONFIG: krb5/krb5.conf
         run: |
-          ./k6 run ci/k6/script.js
+          ./k6 run examples/script.js
+          

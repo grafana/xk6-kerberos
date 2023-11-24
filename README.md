@@ -82,6 +82,7 @@ docker run --rm -i \
   --network gokrb5_default \
   -v $(pwd)/k6:/usr/bin/k6 \
   -v $(pwd)/examples/gokrb5/krb5.conf:/home/k6/krb5.conf \
+  -e KRB5_CONFIG=/home/k6/krb5.conf \
   grafana/k6:master run -<./examples/script.js
 ```
 
