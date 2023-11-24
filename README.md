@@ -1,57 +1,33 @@
 # xk6-kerberos
 
-xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions/). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos). 
-
+xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos). 
 
 ```javascript
 import http from 'k6/http';
 import fs from 'k6/experimental/fs';
 import kerberos from 'k6/x/kerberos';
 
-// Open the Kerberos configuration file
-let configFile;
-(async function () {
-	configFile = await open("krb5.conf");
-})();
+// Open and read the Kerberos configuration file
+const config = open("krb5.conf");
 
-export default function() {
-  // Read the content of the configuration file
-  const config = await readAll(cfg); 
-
+export default function () {
   // A UserClient can be used to authenticate a single user in a kerberos-secured environment.
   const client = new kerberos.UserClient(config, 'myusername', 'mypassword');
 
   // The authenticate method obtains a kerberos service ticket.
-  const token = client.authenticate(service);
-
-  // Which in turn can be used to generate a SPNEGO HTTP header to pass to
-  // HTTP services.
-  const negotiatedHeader = token.negotiateHeader();
+  const token = client.authenticate('http.example.com');
 
   // Perform an authenticated request to a kerberos-secured HTTP service.
-  http.get('https://test-api.k6.io', { Authorization: negociatedHeader });
-}
-
-// readAll is a helper function to read the whole content of a file into
-// a Uint8Array buffer
-async function readAll(file) {
-  const finfo = await file.stat();
-  const buffer = new Uint8Array(finfo.size+1);
-
-	let bytesRead = await file.read(buffer);
-	if (bytesRead !== finfo.size) {
-		// we don't expect to have more or less to read
-		// from the defined file size
-		throw new Error("the read file doesn't match the expected size")
-	}
-
-	return buffer;
+  // Use the returned token to generate a SPNEGO compliant HTTP header to pass to HTTP services.
+  http.get('https://test-api.k6.io', { Authorization: token.negotiateHeader(); });
 }
 ```
 
+Check the [example](#example) section below for a extensive and complete implemention.
+
 ## Getting started
 
-Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
+Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go).
 
 1. Build a k6 binary incorporating the xk6-kerberos extension
 ```bash
@@ -94,7 +70,7 @@ An initialized client can then be used to get Kerberos service tickets.
 const token = client.authenticate(service);
 ```
 
-The returned `session` can be used to generate the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) HTTP header to pass to HTTP services.
+The returned `token` can be used to generate the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) HTTP header to pass to HTTP services.
 
 ```js
 const header = token.negotiateHeader();
@@ -131,9 +107,6 @@ $ docker run --rm -v $(pwd):/xk6 \
     --with github.com/grafana/xk6-kerberos=.
 ```
 
-> [!NOTE]  
-> It uses the `master` branch as it uses the new `k6/experimental/fs` API. Coming soon in v0.48.0, which has not yet been released.
-
 Run the k6 test using the built binary.
 
 ```sh
@@ -147,7 +120,7 @@ docker run --rm -i \
 
 ## Support
 
-To get help, report bugs, suggest features, and discuss k6 with others, refer to k6 [SUPPORT.md](https://github.com/grafana/k6#support).
+To get help, report bugs and suggest features refer to k6 [SUPPORT.md](https://github.com/grafana/k6#support).
 
 ## Contribute
 
