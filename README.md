@@ -3,6 +3,52 @@
 xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions/). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos). 
 
 
+```javascript
+import http from 'k6/http';
+import fs from 'k6/experimental/fs';
+import kerberos from 'k6/x/kerberos';
+
+// Open the Kerberos configuration file
+let configFile;
+(async function () {
+	configFile = await open("krb5.conf");
+})();
+
+export default function() {
+  // Read the content of the configuration file
+  const config = await readAll(cfg); 
+
+  // A UserClient can be used to authenticate a single user in a kerberos-secured environment.
+  const client = new kerberos.UserClient(config, 'myusername', 'mypassword');
+
+  // The authenticate method obtains a kerberos service ticket.
+  const token = client.authenticate(service);
+
+  // Which in turn can be used to generate a SPNEGO HTTP header to pass to
+  // HTTP services.
+  const negotiatedHeader = token.negotiateHeader();
+
+  // Perform an authenticated request to a kerberos-secured HTTP service.
+  http.get('https://test-api.k6.io', { Authorization: negociatedHeader });
+}
+
+// readAll is a helper function to read the whole content of a file into
+// a Uint8Array buffer
+async function readAll(file) {
+  const finfo = await file.stat();
+  const buffer = new Uint8Array(finfo.size+1);
+
+	let bytesRead = await file.read(buffer);
+	if (bytesRead !== finfo.size) {
+		// we don't expect to have more or less to read
+		// from the defined file size
+		throw new Error("the read file doesn't match the expected size")
+	}
+
+	return buffer;
+}
+```
+
 ## Getting started
 
 Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
