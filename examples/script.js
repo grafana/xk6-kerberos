@@ -8,7 +8,7 @@ import { UserClient } from 'k6/x/kerberos';
 export const options = {
   iterations: 1,
 
-// Demonstrative k6 threasholds
+  // Demonstrative k6 threasholds
   thresholds: {
     checks: [{ threshold: 'rate == 1.00', abortOnFail: true }],
     http_req_failed: [{ threshold: 'rate == 0.00', abortOnFail: true }],
@@ -32,12 +32,10 @@ const service = "HTTP/http.example.com"
 const realm = "EXAMPLE.COM"
 
 // Open and load the Kerberos configuration file
-let cfg;
-(async function () {
-  // It is recommended to read from an env variable
-  // https://k6.io/docs/using-k6/environment-variables
-  cfg = open(`${__ENV.KRB5_CONFIG}`);
-})();
+//
+// It is recommended to read from an env variable
+// https://k6.io/docs/using-k6/environment-variables
+const config = open(`${__ENV.KRB5_CONFIG}`);
 
 // This test comes with the assumption to have a 1:1 relationship between k6 VUs and authenticated users.
 // It means every spawn k6 virtual user will load and authenticate only one specific user. 
@@ -52,9 +50,6 @@ export default async function () {
       // As we may decide to have more iterations of the defined credentials
       // we let the index to be cyclical.
       const user = users[(exec.vu.idInTest - 1) % users.length];
-
-      // Read the config file from the file descriptor.
-      const config = await readAll(cfg);
 
       // Authenticate the user and get the session token.
       const client = new UserClient(config, user.username, user.password, realm);
