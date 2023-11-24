@@ -36,7 +36,7 @@ export default async function () {
   // We want a unique session for each single VU.
   if (session == null) {
 		// In this specific example, we want to make sure that
-	  // test is aborted if there is any unexpected error.
+		// test is aborted if there is any unexpected error.
 		try {
 			const user = users[(exec.vu.idInTest-1) % users.length];
 			const kbClient = new UserClient(cfg, user.username, user.password, realm);
