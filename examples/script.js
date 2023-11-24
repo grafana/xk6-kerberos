@@ -35,10 +35,16 @@ let session;
 export default async function () {
   // We want a unique session for each single VU.
   if (session == null) {
-    const user = users[(exec.vu.idInTest-1) % users.length];
-		const kbClient = new UserClient(cfg, user.username, user.password, realm);
-    const token = kbClient.authenticate(service);
-    session = token.negotiateHeader();
+		// In this specific example, we want to make sure that
+	  // test is aborted if there is any unexpected error.
+		try {
+			const user = users[(exec.vu.idInTest-1) % users.length];
+			const kbClient = new UserClient(cfg, user.username, user.password, realm);
+			const token = kbClient.authenticate(service);
+			session = token.negotiateHeader();
+		} catch (e) {
+			exec.test.abort(e);
+		}
   }
 
   let headers = {Authorization: session};
