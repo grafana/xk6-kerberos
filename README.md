@@ -11,21 +11,21 @@ import { UserClient} `k6/x/kerberos`;
 
 ```
 
-The client is expected to be instantiated by invoking its constructor passing through the Kerberos configuration.
+The client is expected to be instantiated by invoking its constructor passing through the Kerberos configuration and user credentials.
 
 ```js
 const client = new UserClient(config, username, password, realm).
 
 ```
 
-Check the table below to see the expected argument
+Check the table below to see the expected arguments:
 
 | Argument | Type | Required | Description |
 |----------|------|----------|-------------|
 | Configuration | ArrayBuffer | Yes | It contains the [Kerberos configuration](https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html). Typically available in defined `krb5.conf` file. |
 | Username      | string      | Yes | The user's username. |
 | Password      | string      | Yes | The user's password. |
-| Realm         | string      | No  | It is optional and the default value is an empty string. |
+| Realm         | string      | No  | Optional. If not defined it uses the default realm from config. |
 
 When a client is initialized then it can be used for getting Kerberos service tickets.
 
@@ -48,11 +48,11 @@ It can be then used with the common `k6/http` client to submit authenticated req
 
 ## Usage
 
-To being able to use xk6-kerberos extension is required to build a new k6 binary. A detailed guide how to do it via a Docker or Go environment is available on the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
+To use the xk6-kerberos extension, it is necessary to build a new k6 binary. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
 
 ## Example
 
-In [examples/krb5](./examples/krb5) a [fully working testing environment](./examples/krb5/docker-compose.yml) and a [simple example](./examples/script.js) are available to demostrate how to use the `k6/x/kerberos` module to authenticate against a Kerberos server and perform a request to service protected by Kerberos authentication.
+In [examples/krb5](./examples/krb5) a [fully working testing environment](./examples/krb5/docker-compose.yml) and a [simple example](./examples/script.js) are available to demonstrate how to use the `k6/x/kerberos` module to authenticate against a Kerberos server and perform a request to a service protected by Kerberos authentication.
 
 ### How to run
 
@@ -73,7 +73,7 @@ $ docker run --rm -v $(pwd):/xk6 \
 ```
 
 > [!NOTE]  
-> It uses the `master` branch as it uses the new `k6/experimental/fs` API. Soon avilable in v0.48.0 that isn't yet released.
+> It uses the `master` branch as it uses the new `k6/experimental/fs` API. Coming soon in v0.48.0, which has not yet been released.
 
 Run the k6 test using the built binary.
 
@@ -94,7 +94,7 @@ To get help, report bugs, suggest features, and discuss k6 with others, refer to
 If you want to contribute or help with the development of xk6-kerberos, start by reading k6 [CONTRIBUTING.md](https://github.com/grafana/k6/blob/master/CONTRIBUTING.md). Before you start coding, it might be a good idea to first discuss your plans and implementation details with the k6 maintainers—especially when it comes to big changes and features. You can do this in the GitHub issue for the problem you're solving (create one if it doesn't exist).
 
 > [!NOTE]  
-> Note: To disclose security issues, refer to k6 [SECURITY.md](https://github.com/grafana/k6/blob/master/SECURITY.md).
+> To disclose security issues, refer to k6 [SECURITY.md](https://github.com/grafana/k6/blob/master/SECURITY.md).
 
 ## Development
 
