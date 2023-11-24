@@ -7,16 +7,10 @@ import http from 'k6/http';
 import fs from 'k6/experimental/fs';
 import kerberos from 'k6/x/kerberos';
 
-// Open the Kerberos configuration file
-let configFile;
-(async function () {
-  configFile = await fs.open("krb5.conf");
-})();
+// Open and read the Kerberos configuration file
+const config = open("krb5.conf");
 
 export default function () {
-  // Read the content of the configuration file
-  const config = await readAll(configFile);
-
   // A UserClient can be used to authenticate a single user in a kerberos-secured environment.
   const client = new kerberos.UserClient(config, 'myusername', 'mypassword');
 
@@ -112,9 +106,6 @@ $ docker run --rm -v $(pwd):/xk6 \
     grafana/xk6 build master \
     --with github.com/grafana/xk6-kerberos=.
 ```
-
-> [!NOTE]  
-> It uses the `master` branch as it uses the new `k6/experimental/fs` API. Coming soon in v0.48.0, which has not yet been released.
 
 Run the k6 test using the built binary.
 
