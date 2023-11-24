@@ -1,23 +1,39 @@
 # xk6-kerberos
 
-k6 extension that adds support for [Kerberos](https://web.mit.edu/kerberos) authentication protocol. It adds a `k6/x/kerberos` JavaScript module.
+xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions/). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos). 
 
-### JavaScript API
 
-The extension exports a `UserClient` type usable for authenticating a single user over a Kerberos-secured environment. Imports the library by its expected path `k6/x/kerberos`.
+## Getting started
 
-```js
-import { UserClient} `k6/x/kerberos`;
+Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
 
+1. Build a k6 binary incorporating the xk6-kerberos extension
+```bash
+xk6 build --with github.com/grafana/xk6-kerberos=.
 ```
 
-The client is expected to be instantiated by invoking its constructor, passing through the Kerberos configuration and user credentials.
-
-```js
-const client = new UserClient(config, username, password, realm).
+2. Run a test script with the newly built binary
+```bash
+./k6 run script.js
 ```
 
-Check the table below to see the expected arguments:
+## Usage
+
+Once [built](#getting-started) into a k6 executable using [xk6](https://github.com/grafana/xk6), the extension can be imported by load test scripts as the `k6/x/kerberos` JavaScript module.
+
+```javascript
+import kerberos from 'k6/x/kerberos';
+```
+
+### UserClient
+
+The module exports a `UserClient` type which can be used to authenticate a single user in a Kerberos-secured environment. Construct a `UserClient` instance by passing the Kerberos configuration and user credentials.
+
+```js
+const client = new UserClient(config, username, password, realm)
+```
+
+The table below details the expected arguments:
 
 | Argument | Type | Required | Description |
 |----------|------|----------|-------------|
@@ -26,13 +42,13 @@ Check the table below to see the expected arguments:
 | Password      | string      | Yes | The user's password. |
 | Realm         | string      | No  | Optional. If not defined, it uses the default realm from config. |
 
-When a client is initialized, then it can be used to get Kerberos service tickets.
+An initialized client can then be used to get Kerberos service tickets.
 
 ```js
 const token = client.authenticate(service);
 ```
 
-The returned `session` can be used to generate the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) header to pass to HTTP services.
+The returned `session` can be used to generate the expected [SPNEGO](https://datatracker.ietf.org/doc/html/rfc4559#section-4.2) HTTP header to pass to HTTP services.
 
 ```js
 const header = token.negotiateHeader();
@@ -46,10 +62,6 @@ import http from 'k6/http';
 let headers = {Authorization: negotiateHeader};
 http.get('http://test.k6.io', headers);
 ```
-
-## Usage
-
-Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/).
 
 ## Example
 
