@@ -36,5 +36,7 @@ jobs:
             --output ./k6 \
             --with github.com/grafana/xk6-kerberos=.
       - name: Run k6 test
+        env:
+          KRB5_CONFIG: ../config/krb5.conf
         run: |
           ./k6 run ci/k6/script.js
