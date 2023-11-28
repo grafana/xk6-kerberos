@@ -1,0 +1,80 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.4.0/github-markdown.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+    <style>
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <title>k6/x/kerberos</title>
+  </head>
+  <body class="markdown-body">
+<!-- begin:api -->
+<h1 id="k6-x-kerberos">k6/x/kerberos</h1>
+
+<p>xk6-kerberos enables k6 tests to perform tests on environments secured with <a href="https://web.mit.edu/kerberos">Kerberos</a>.</p>
+
+<h2 id="userclient">UserClient</h2>
+
+<p>The <code>UserClient</code> is the main class to interact with Kerberos, it is used to authenticate against a Kerberos server (KDC) and obtain a ticket granting ticket (TGT) and service ticket (ST) for a given service principal name (SPN).</p>
+
+<h3 id="userclient-1">UserClient()</h3>
+
+<pre><code class="language-ts">constructor(config: ArrayBuffer, username: string, password: string, realm?: string);
+</code></pre>
+
+<ul>
+<li><p><code>config</code> The <a href="https://web.mit.edu/kerberos/krb5-1.12/doc/admin/conf_files/krb5_conf.html">Kerberos configuration</a> bytes. Typically available in defined <code>krb5.conf</code> file.</p></li>
+
+<li><p><code>username</code> The user's username.</p></li>
+
+<li><p><code>password</code> The user's password.</p></li>
+
+<li><p><code>realm</code> <em>Optional</em>. If not defined, it uses the default realm from config.</p></li>
+</ul>
+
+<p>The UserClient() is the main constructor to instantiate a new Kerberos client for a given user.</p>
+
+<p><em>Returns a <code>UserClient</code> instance.</em></p>
+
+<h3 id="userclient-authenticate">UserClient.authenticate()</h3>
+
+<pre><code class="language-ts">authenticate(spn: string): Token;
+</code></pre>
+
+<ul>
+<li><code>spn</code> The service principal name (SPN) to request a service ticket (ST) for.</li>
+</ul>
+
+<p>The <code>authenticate()</code> method uses the ticket granting ticket (TGT) stored in the <code>UserClient</code> instance to request a service ticket (ST) for a given service principal name (SPN).</p>
+
+<p><em>Returns a <code>Token</code> instance, that contains the service ticket (ST).</em></p>
+
+<h2 id="token">Token</h2>
+
+<h3 id="token-negotiateheader">Token.negotiateHeader()</h3>
+
+<pre><code class="language-ts">negotiateHeader(): string;
+</code></pre>
+
+<p>The <code>negotiateHeader()</code> returns the value for the expected <a href="https://datatracker.ietf.org/doc/html/rfc4559#section-4.2">SPNEGO</a> HTTP header to pass to HTTP services.</p>
+
+<p><em>Returns the <code>Authentication</code> header value, including the <code>Negotiate</code> prefix.</em></p>
+<!-- end:api -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  </body>
+</html>

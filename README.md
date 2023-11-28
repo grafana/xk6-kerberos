@@ -132,3 +132,33 @@ If you want to contribute or help with the development of xk6-kerberos, start by
 ## Development
 
 The module is based on top of the [gokrb5](https://github.com/jcmturner/gokrb5) library.
+
+### Reference
+<!-- begin:api -->
+k6/x/kerberos
+=============
+
+UserClient
+----------
+
+### UserClient()
+
+```ts
+constructor(config: ArrayBuffer, username: string, password: string, realm?: string);
+```
+
+### UserClient.authenticate()
+
+```ts
+authenticate(spn: string): Token;
+```
+
+Token
+-----
+
+### Token.negotiateHeader()
+
+```ts
+negotiateHeader(): string;
+```
+<!-- end:api -->
