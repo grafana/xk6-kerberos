@@ -60,6 +60,7 @@ jobs:
         if: matrix.go-version == 'tip'
         uses: robinraju/release-downloader@v1.8
         with:
+          repository: "grafana/gotip"
           tag: "${{ matrix.platform }}"
           fileName: go.zip
       - name: Install Go tip
