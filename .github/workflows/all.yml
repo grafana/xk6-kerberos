@@ -8,6 +8,10 @@ on:
       - v*
   pull_request:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   dependencies:
     runs-on: ubuntu-latest
@@ -64,7 +68,6 @@ jobs:
           tag: "${{ matrix.platform }}"
           fileName: go.zip
       - name: Install Go tip
-        shell: bash
         if: matrix.go-version == 'tip'
         run: |
           unzip go.zip -d $HOME/sdk
