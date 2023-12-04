@@ -12,7 +12,7 @@ ENTRYPOINT ["/opt/krb5/bin/start.sh"]
 COPY krb5.conf /etc/krb5.conf
 
 # Copy the Kerberos ACL configuration file
-COPY kadm5.acl /etc/krb5kdc/kadm5.acl
+COPY kadm5.acl /var/lib/krb5kdc/kadm5.acl
 
 # Copy the initialization script (it creates the Kerberos database, etc)
 COPY krb5kdc-init.sh /opt/krb5/bin/krb5kdc-init.sh
