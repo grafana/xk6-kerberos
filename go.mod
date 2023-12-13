@@ -54,3 +54,5 @@ require (
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/guregu/null.v3 v3.3.0 // indirect
 )
+
+replace github.com/jcmturner/gokrb5/v8 => github.com/grafana/gokrb5/v8 v8.0.0-20231214000640-3ca36aab59b7
