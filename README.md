@@ -4,7 +4,6 @@ xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions). It adds su
 
 ```javascript
 import http from 'k6/http';
-import fs from 'k6/experimental/fs';
 import kerberos from 'k6/x/kerberos';
 
 // Open and read the Kerberos configuration file
