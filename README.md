@@ -41,8 +41,10 @@ In the current state, as it is a private repository, build directly from the sou
 
 1. Build a k6 binary incorporating the xk6-kerberos extension
 ```bash
-xk6 build --with github.com/grafana/xk6-kerberos=.
+xk6 build --with github.com/grafana/xk6-kerberos=. --replace github.com/jcmturner/gokrb5/v8=github.com/grafana/gokrb5/v8@fix-130
 ```
+
+Note: The extension uses a forked version of the `gokrb5` library, for this reason, it is required to force the dependency to a specific branch. We intend to get the branch merged and drop the overwriting requirement.
 
 2. Run a test script with the newly built binary
 ```bash
