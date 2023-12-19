@@ -93,7 +93,7 @@ func (mi *ModuleInstance) newClient(call goja.ConstructorCall) *goja.Object {
 	c := &Client{
 		vu:      mi.vu,
 		config:  cfg,
-		kclient: client.NewWithPassword(user, realm, pass, cfg),
+		kclient: client.NewWithPassword(user, realm, pass, cfg, client.DisablePAFXFAST(true)),
 	}
 
 	return rt.ToValue(c).ToObject(rt)
