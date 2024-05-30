@@ -34,8 +34,7 @@ jobs:
           go install go.k6.io/xk6/cmd/xk6@master
           GOPRIVATE="go.k6.io/k6" xk6 build \
             --output ./k6 \
-            --with github.com/grafana/xk6-kerberos=. \
-            --replace github.com/jcmturner/gokrb5/v8=github.com/grafana/gokrb5/v8@fix-130
+            --with github.com/grafana/xk6-kerberos=.
       - name: Run k6 test
         env:
           KRB5_CONFIG: krb5/krb5.conf
