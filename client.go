@@ -7,9 +7,9 @@ import (
 	"fmt"
 
 	"github.com/dop251/goja"
-	"github.com/jcmturner/gokrb5/v8/client"
-	"github.com/jcmturner/gokrb5/v8/config"
-	"github.com/jcmturner/gokrb5/v8/spnego"
+	"github.com/grafana/gokrb5/v8/client"
+	"github.com/grafana/gokrb5/v8/config"
+	"github.com/grafana/gokrb5/v8/spnego"
 	"go.k6.io/k6/js/common"
 	"go.k6.io/k6/js/modules"
 )

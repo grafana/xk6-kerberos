@@ -40,7 +40,7 @@ In the current state, building directly from the source code using Go could be h
 
 1. Build a k6 binary incorporating the xk6-kerberos extension
 ```bash
-xk6 build --with github.com/grafana/xk6-kerberos=. --replace github.com/jcmturner/gokrb5/v8=github.com/grafana/gokrb5/v8@fix-130
+xk6 build --with github.com/grafana/xk6-kerberos=.
 ```
 
 Note: The extension uses a forked version of the `gokrb5` library, for this reason, it is required to force the dependency to a specific branch. We intend to get the branch merged and drop the overwriting requirement.

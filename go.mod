@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/dop251/goja v0.0.0-20231027120936-b396bb4c349d
-	github.com/jcmturner/gokrb5/v8 v8.4.4
+	github.com/grafana/gokrb5/v8 v8.0.0-20240530080438-020763891d2e
 	go.k6.io/k6 v0.47.1-0.20231120105550-a087d424a362
 )
 
@@ -43,10 +43,10 @@ require (
 	go.opentelemetry.io/otel/sdk v1.19.0 // indirect
 	go.opentelemetry.io/otel/trace v1.19.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.0.0 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20230711160842-782d3b101e98 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230731193218-e0aa005b6bdf // indirect
@@ -54,5 +54,3 @@ require (
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/guregu/null.v3 v3.3.0 // indirect
 )
-
-replace github.com/jcmturner/gokrb5/v8 => github.com/grafana/gokrb5/v8 v8.0.0-20231214000640-3ca36aab59b7
