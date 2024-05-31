@@ -43,8 +43,6 @@ In the current state, building directly from the source code using Go could be h
 xk6 build --with github.com/grafana/xk6-kerberos=.
 ```
 
-Note: The extension uses a forked version of the `gokrb5` library, for this reason, it is required to force the dependency to a specific branch. We intend to get the branch merged and drop the overwriting requirement.
-
 2. Run a test script with the newly built binary
 ```bash
 ./k6 run script.js
