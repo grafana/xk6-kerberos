@@ -1,6 +1,6 @@
 # xk6-kerberos
 
-xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos). 
+xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos).
 
 ```javascript
 import http from 'k6/http';
@@ -135,9 +135,9 @@ To get help, report bugs and suggest features refer to k6 [SUPPORT.md](https://g
 
 If you want to contribute or help with the development of xk6-kerberos, start by reading k6 [CONTRIBUTING.md](https://github.com/grafana/k6/blob/master/CONTRIBUTING.md).  Before you start coding, it might be a good idea to discuss your plans and implementation details with the k6 maintainers—especially regarding big changes and features. You can do this in the GitHub issue for the problem you're solving (create one if it doesn't exist).
 
-> [!NOTE]  
+> [!NOTE]
 > To disclose security issues, refer to k6 [SECURITY.md](https://github.com/grafana/k6/blob/master/SECURITY.md).
 
 ## Development
 
-The module is based on top of the [gokrb5](https://github.com/jcmturner/gokrb5) library.
+The module is based on top of the [gokrb5](https://github.com/jcmturner/gokrb5) library and its forked version [grafana/gokrb5](https://github.com/grafana/gokrb5).
