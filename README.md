@@ -1,6 +1,6 @@
 # xk6-kerberos
 
-xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos). 
+xk6-kerberos is an [extension for k6](https://grafana.com/docs/k6/latest/extensions/). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos).
 
 ```javascript
 import http from 'k6/http';
@@ -26,7 +26,7 @@ Check the [example](#example) section below for a extensive and complete impleme
 
 ## Getting started
 
-Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go).
+Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://grafana.com/docs/k6/latest/extensions/build-k6-binary-using-go/).
 
 In the current state, building directly from the source code using Go could be helpful. We list below the suggested steps:
 
@@ -42,8 +42,6 @@ In the current state, building directly from the source code using Go could be h
 ```bash
 xk6 build --with github.com/grafana/xk6-kerberos=.
 ```
-
-Note: The extension uses a forked version of the `gokrb5` library, for this reason, it is required to force the dependency to a specific branch. We intend to get the branch merged and drop the overwriting requirement.
 
 2. Run a test script with the newly built binary
 ```bash
@@ -137,9 +135,9 @@ To get help, report bugs and suggest features refer to k6 [SUPPORT.md](https://g
 
 If you want to contribute or help with the development of xk6-kerberos, start by reading k6 [CONTRIBUTING.md](https://github.com/grafana/k6/blob/master/CONTRIBUTING.md).  Before you start coding, it might be a good idea to discuss your plans and implementation details with the k6 maintainers—especially regarding big changes and features. You can do this in the GitHub issue for the problem you're solving (create one if it doesn't exist).
 
-> [!NOTE]  
+> [!NOTE]
 > To disclose security issues, refer to k6 [SECURITY.md](https://github.com/grafana/k6/blob/master/SECURITY.md).
 
 ## Development
 
-The module is based on top of the [gokrb5](https://github.com/jcmturner/gokrb5) library.
+The module is based on top of the [gokrb5](https://github.com/jcmturner/gokrb5) library and its forked version [grafana/gokrb5](https://github.com/grafana/gokrb5).
