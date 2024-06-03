@@ -1,6 +1,6 @@
 # xk6-kerberos
 
-xk6-kerberos is an [extension for k6](https://k6.io/docs/extensions). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos).
+xk6-kerberos is an [extension for k6](https://grafana.com/docs/k6/latest/extensions/). It adds support for the [Kerberos](https://web.mit.edu/kerberos) authentication protocol to k6, enabling you to perform tests on environments secured with [Kerberos](https://web.mit.edu/kerberos).
 
 ```javascript
 import http from 'k6/http';
@@ -26,7 +26,7 @@ Check the [example](#example) section below for a extensive and complete impleme
 
 ## Getting started
 
-Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go).
+Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://grafana.com/docs/k6/latest/extensions/build-k6-binary-using-go/).
 
 In the current state, building directly from the source code using Go could be helpful. We list below the suggested steps:
 
