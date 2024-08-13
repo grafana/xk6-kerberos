@@ -28,24 +28,31 @@ Check the [example](#example) section below for a extensive and complete impleme
 
 Using the xk6-kerberos extension involves building a k6 binary incorporating it. A detailed guide on how to do this using a Docker or Go environment is available in the [extension's documentation](https://grafana.com/docs/k6/latest/extensions/build-k6-binary-using-go/).
 
-In the current state, building directly from the source code using Go could be helpful. We list below the suggested steps:
+We list below the suggested steps:
 
 ### Prepare the local environment
 
 1. Make sure `git` and `go` are available commands.
 2. Install [xk6](https://github.com/grafana/xk6#local-installation) as suggested in the [local installation](https://github.com/grafana/xk6#local-installation) documentation's section.
-3. Clone the xk6-kerberos repository and move inside the project's folder
 
 ### Build the binary
 
 1. Build a k6 binary incorporating the xk6-kerberos extension
 ```bash
-xk6 build --with github.com/grafana/xk6-kerberos=.
+xk6 build --with github.com/grafana/xk6-kerberos
 ```
 
 2. Run a test script with the newly built binary
 ```bash
 ./k6 run script.js
+```
+
+#### Run a local version
+
+Instead, use the following command after you've cloned the xk6-kerberos repository and moved inside the project's folder, if you want to use a local version of the extension:
+
+```bash
+xk6 build --with github.com/grafana/xk6-kerberos=.
 ```
 
 ## Usage
