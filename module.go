@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/dop251/goja"
 	"github.com/grafana/gokrb5/v8/client"
 	"github.com/grafana/gokrb5/v8/config"
+	"github.com/grafana/sobek"
 
 	"go.k6.io/k6/js/common"
 	"go.k6.io/k6/js/modules"
@@ -58,7 +58,7 @@ func (mi *ModuleInstance) Exports() modules.Exports {
 }
 
 // newClient is the JS constructor for the Kerberos client.
-func (mi *ModuleInstance) newClient(call goja.ConstructorCall) *goja.Object {
+func (mi *ModuleInstance) newClient(call sobek.ConstructorCall) *sobek.Object {
 	rt := mi.vu.Runtime()
 
 	if len(call.Arguments) < 3 {

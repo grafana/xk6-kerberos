@@ -6,10 +6,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/dop251/goja"
 	"github.com/grafana/gokrb5/v8/client"
 	"github.com/grafana/gokrb5/v8/config"
 	"github.com/grafana/gokrb5/v8/spnego"
+	"github.com/grafana/sobek"
 	"go.k6.io/k6/js/common"
 	"go.k6.io/k6/js/modules"
 )
@@ -59,7 +59,7 @@ func (t Token) NegotiateHeader() string {
 	return "Negotiate " + string(t)
 }
 
-func toBuffer(rt *goja.Runtime, v goja.Value) ([]byte, error) {
+func toBuffer(rt *sobek.Runtime, v sobek.Value) ([]byte, error) {
 	if common.IsNullish(v) {
 		return nil, errors.New("value cannot be null or undefined")
 	}
@@ -70,17 +70,17 @@ func toBuffer(rt *goja.Runtime, v goja.Value) ([]byte, error) {
 		return []byte(obj.String()), nil
 	}
 
-	var array *goja.ArrayBuffer
+	var array *sobek.ArrayBuffer
 	uint8ArrayConstructor := rt.Get("Uint8Array")
 	if isUint8Array := obj.Get("constructor").SameAs(uint8ArrayConstructor); isUint8Array {
-		if v, ok := obj.Get("buffer").Export().(goja.ArrayBuffer); ok {
+		if v, ok := obj.Get("buffer").Export().(sobek.ArrayBuffer); ok {
 			array = &v
 		}
 	}
 
 	arrayBufferConstructor := rt.Get("ArrayBuffer")
 	if isArrayBuffer := obj.Get("constructor").SameAs(arrayBufferConstructor); isArrayBuffer {
-		if v, ok := obj.Export().(goja.ArrayBuffer); ok {
+		if v, ok := obj.Export().(sobek.ArrayBuffer); ok {
 			array = &v
 		}
 	}
