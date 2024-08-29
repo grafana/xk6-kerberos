@@ -18,7 +18,7 @@ export default function () {
 
   // Perform an authenticated request to a kerberos-secured HTTP service.
   // Use the returned token to generate a SPNEGO compliant HTTP header to pass to HTTP services.
-  http.get('https://test-api.k6.io', { Authorization: token.negotiateHeader(); });
+  http.get('https://test-api.k6.io', {"headers": {"Authorization": token.negotiateHeader()}});
 }
 ```
 

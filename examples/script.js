@@ -61,7 +61,7 @@ export default async function () {
   }
 
   // Run HTTP requests using the previously authenticated user.
-  const res = http.get("http://http.example.com", { Authorization: session });
+  const res = http.get("http://http.example.com", {"headers": {"Authorization": session}});
 
   // Simple demonstrative k6 checks.
   check(res, {
