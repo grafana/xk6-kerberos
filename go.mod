@@ -1,8 +1,8 @@
 module github.com/grafana/xk6-kerberos
 
-go 1.22
+go 1.23
 
-toolchain go1.24.0
+toolchain go1.23.0
 
 require (
 	github.com/grafana/gokrb5/v8 v8.0.0-20240530080438-020763891d2e
