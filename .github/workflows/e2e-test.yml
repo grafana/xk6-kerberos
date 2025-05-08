@@ -9,6 +9,9 @@ on:
       - v*
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
