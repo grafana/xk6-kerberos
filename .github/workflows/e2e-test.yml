@@ -12,6 +12,8 @@ on:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
