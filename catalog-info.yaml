@@ -6,7 +6,6 @@ metadata:
   description: |
     k6 extension that adds support for Kerberos authentication protocol.
   annotations:
-    backstage.io/techdocs-ref: dir:.
     github.com/project-slug: grafana/xk6-kerberos
 spec:
   type: library
