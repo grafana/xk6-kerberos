@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: xk6-kerberos
+  title: xk6-kerberos
+  description: |
+    k6 extension that adds support for Kerberos authentication protocol.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: grafana/xk6-kerberos
+spec:
+  type: library
+  owner: group:default/k6-extensions
+  lifecycle: production
