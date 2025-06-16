@@ -15,6 +15,8 @@ permissions:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,9 +31,10 @@ jobs:
           docker run -d -p 80:80 --name apache-server apache-server
           echo "127.0.0.1 http.example.com" | sudo tee -a /etc/hosts
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.21.x'
+          go-version: '1.24.x'
+          cache: false
       - name: Build xk6 with Kerberos
         run: |
           go install go.k6.io/xk6/cmd/xk6@master
