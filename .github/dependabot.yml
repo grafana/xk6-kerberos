@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-name: "github.com/grafana/gokrb5/*"
+      - dependency-name: "go.k6.io/k6"
