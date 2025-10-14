@@ -49,8 +49,8 @@ github.com/gorilla/sessions v1.2.2 h1:lqzMYz6bOfvn2WriPUjNByzeXIlVzURcPmgMczkmTj
 github.com/gorilla/sessions v1.2.2/go.mod h1:ePLdVu+jbEgHH+KWw8I1z2wqd0BAdAQh/8LRvBeoNcQ=
 github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
 github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
-github.com/grafana/gokrb5/v8 v8.0.0-20240530080438-020763891d2e h1:OzKwyFsNtubO17GkE+D/6Ka/ZNNQ1idVU0snSJ4LPGI=
-github.com/grafana/gokrb5/v8 v8.0.0-20240530080438-020763891d2e/go.mod h1:fcPrW8CGF5hh6bE0UQJfIrBH9C9m1W9SwTBzhOB8ehM=
+github.com/grafana/gokrb5/v8 v8.0.0-20240530081837-d6c270e54f7f h1:l0qf2MGg2ZD0iA6zMRfZR+nXzm22QpLjzTrT5e3rsbE=
+github.com/grafana/gokrb5/v8 v8.0.0-20240530081837-d6c270e54f7f/go.mod h1:fcPrW8CGF5hh6bE0UQJfIrBH9C9m1W9SwTBzhOB8ehM=
 github.com/grafana/sobek v0.0.0-20250723111835-dd8a13f0d439 h1:8J9JisdHRtzAApem1KriElKd8mLyPuKkFDMuqI9S95c=
 github.com/grafana/sobek v0.0.0-20250723111835-dd8a13f0d439/go.mod h1:FmcutBFPLiGgroH42I4/HBahv7GxVjODcVWFTw1ISes=
 github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 h1:X5VWvz21y3gzm9Nw/kaUeku/1+uBhcekkmy4IkffJww=
