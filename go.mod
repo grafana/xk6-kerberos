@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/grafana/gokrb5/v8 v8.0.0-20240530081837-d6c270e54f7f
-	github.com/grafana/sobek v0.0.0-20250723111835-dd8a13f0d439
+	github.com/grafana/sobek v0.0.0-20251023212721-948841256feb
 	go.k6.io/k6 v1.3.0
 )
 
