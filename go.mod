@@ -6,13 +6,13 @@ toolchain go1.24.1
 
 require (
 	github.com/grafana/gokrb5/v8 v8.0.0-20240530081837-d6c270e54f7f
-	github.com/grafana/sobek v0.0.0-20250723111835-dd8a13f0d439
+	github.com/grafana/sobek v0.0.0-20251103154147-6b40183f38e5
 	go.k6.io/k6 v1.3.0
 )
 
 require (
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
-	github.com/dlclark/regexp2 v1.11.4 // indirect
+	github.com/dlclark/regexp2 v1.11.5 // indirect
 	github.com/evanw/esbuild v0.25.9 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
