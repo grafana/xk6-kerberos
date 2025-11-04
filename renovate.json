@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "timezone": "UTC",
+  "labels": [
+    "dependencies"
+  ],
+  "packageRules": [
+    {
+      "description": "Disable updates for all Gomod dependencies by default",
+      "matchManagers": [
+        "gomod"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "k6 core and ecosystem packages",
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchPackageNames": [
+        "go.k6.io/k6"
+      ],
+      "groupName": "k6 ecosystem",
+      "enabled": true
+    },
+    {
+      "description": "Update Go versions only when a patch version exists (z > 0 in v1.x.z)",
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchPackageNames": [
+        "go"
+      ],
+      "allowedVersions": "/^(?:v)?\\d+\\.\\d+\\.[1-9]\\d*$/"
+    }
+  ]
+}
