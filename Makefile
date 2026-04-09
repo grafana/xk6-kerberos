@@ -24,7 +24,7 @@ linter-config:
 
 ## check-linter-version: Checks if the linter version is the same as the one specified in the linter config.
 check-linter-version:
-	(golangci-lint version | grep "version $(shell head -n 1 .golangci.yml | tr -d '\# ')") || echo "Your installation of golangci-lint is different from the one that is specified in k6's linter config (there it's $(shell head -n 1 .golangci.yml | tr -d '\# ')). Results could be different in the CI."
+	(golangci-lint version | grep -E "version v?$(shell head -n 1 .golangci.yml | tr -d '\# v')") || echo "Your installation of golangci-lint is different from the one that is specified in k6's linter config (there it's $(shell head -n 1 .golangci.yml | tr -d '\# ')). Results could be different in the CI."
 
 ## test: Executes any tests.
 test:
@@ -32,9 +32,9 @@ test:
 	go test -race -timeout 30s ./...
 
 ## lint: Runs the linters.
-lint: linter-config check-linter-version
+lint: check-linter-version
 	echo "Running linters..."
-	golangci-lint run --out-format=tab ./...
+	golangci-lint run ./...
 
 ## check: Runs the linters and tests.
 check: lint test
