@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "Automerge digest updates for grafana/k6 actions",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchPackageNames": [
+        "actions/checkout",
+        "actions/setup-go",
+        "grafana/k6",
+        "grafana/k6/.github/workflows/issue-auto-assign.yml",
+        "grafana/k6-ci/.github/workflows/all.yml"
+      ],
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Automerge digest updates for grafana/sobek",
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchPackageNames": [
+        "github.com/grafana/sobek"
+      ],
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Automerge minor, patch and digest updates for go.k6.io/k6",
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchPackageNames": [
+        "go.k6.io/k6"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "enabled": true,
+      "automerge": true
+    }
+  ]
+}
