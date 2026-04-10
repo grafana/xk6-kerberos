@@ -11,4 +11,4 @@ permissions:
 
 jobs:
   assign-maintainer:
-    uses: grafana/k6/.github/workflows/issue-auto-assign.yml@01724e37979e9b6d6db1d4b5d9a03328c67f9095 # master
+    uses: grafana/k6/.github/workflows/issue-auto-assign.yml@5e2a6e13e42d68cc291cdc5b81946ebb4341bb55 # master
