@@ -2,11 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>grafana/grafana-renovate-config//presets/k6/k6-engine-base.json",
-    "github>grafana/xk6-kerberos//.github/renovate/automerge",
-    "schedule:weekly"
-  ],
-  "timezone": "UTC",
-  "labels": [
-    "dependencies"
+    "github>grafana/grafana-renovate-config//presets/k6/k6-engine-automerge.json"
   ]
 }
