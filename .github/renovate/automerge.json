@@ -38,7 +38,7 @@
       ],
       "matchPackageNames": [
         "github.com/grafana/sobek",
-        "go.k6.io/k6"
+        "go.k6.io/k6/v2"
       ],
       "matchUpdateTypes": [
         "minor",

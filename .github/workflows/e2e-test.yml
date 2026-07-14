@@ -37,7 +37,7 @@ jobs:
           cache: false
       - name: Build xk6 with Kerberos
         run: |
-          go install go.k6.io/xk6/cmd/xk6@v1.3.7
+          go install go.k6.io/xk6/cmd/xk6@v1.4.1
           GOPRIVATE="go.k6.io/k6" xk6 build \
             --output ./k6 \
             --with github.com/grafana/xk6-kerberos=.
