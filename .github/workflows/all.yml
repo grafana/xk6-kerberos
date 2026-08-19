@@ -13,4 +13,4 @@ permissions:
 
 jobs:
   checks:
-    uses: grafana/k6-ci/.github/workflows/all.yml@ed9ce7ed320a35f30705f8e5fd3acba85cb5372e # main
+    uses: grafana/k6-ci/.github/workflows/all.yml@777962b022a831166517639e542630d8b7d1455f # v0.4.0
