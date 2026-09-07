@@ -23,3 +23,4 @@ The realm argument is optional. When omitted, the gokrb5 library infers the real
 - The gokrb5 dependency is a Grafana-maintained fork, not the upstream jcmturner version. Updating it requires using the Grafana fork's module path.
 
 - The linter config is not checked in. It is downloaded from the k6 main repo on first lint run. Do not commit it.
+- Security issues should be reported via [Grafana's security issue reporting page](https://grafana.com/legal/report-a-security-issue/) and not directly in this repository.
