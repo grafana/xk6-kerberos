@@ -13,7 +13,19 @@ permissions:
   contents: read
 
 jobs:
+  go-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      current: ${{ steps.go-versions.outputs.current }}
+    steps:
+      - name: Resolve Go versions
+        id: go-versions
+        uses: grafana/k6-ci/.github/actions/go-versions@41aaf8e365b56fd120b0396beae2eba3969babab # v0.5.1
+
   e2e-test:
+    needs: go-versions
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -33,7 +45,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
-          go-version: '1.25.x'
+          go-version: ${{ needs.go-versions.outputs.current }}
           cache: false
       - name: Build xk6 with Kerberos
         run: |
