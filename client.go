@@ -10,8 +10,8 @@ import (
 	"github.com/grafana/gokrb5/v8/config"
 	"github.com/grafana/gokrb5/v8/spnego"
 	"github.com/grafana/sobek"
-	"go.k6.io/k6/js/common"
-	"go.k6.io/k6/js/modules"
+	"go.k6.io/k6/v2/js/common"
+	"go.k6.io/k6/v2/js/modules"
 )
 
 // Client is the main object exposed on the JavaScript API.
