@@ -30,14 +30,17 @@ jobs:
           docker build -t apache-server -f ./examples/krb5/Dockerfile.apache ./examples/krb5/
           docker run -d -p 80:80 --name apache-server apache-server
           echo "127.0.0.1 http.example.com" | sudo tee -a /etc/hosts
+      - name: Resolve Go versions
+        id: go_versions
+        uses: grafana/k6-ci/.github/actions/go-versions@bc53c239916ae45b50a0bdea2a37698589219c84 # v0.5.3
       - name: Set up Go
-        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
-          go-version: '1.25.x'
+          go-version: ${{ steps.go_versions.outputs.current }}
           cache: false
       - name: Build xk6 with Kerberos
         run: |
-          go install go.k6.io/xk6/cmd/xk6@v1.3.7
+          go install go.k6.io/xk6/cmd/xk6@v1.5.0
           GOPRIVATE="go.k6.io/k6" xk6 build \
             --output ./k6 \
             --with github.com/grafana/xk6-kerberos=.
@@ -46,4 +49,3 @@ jobs:
           KRB5_CONFIG: krb5/krb5.conf
         run: |
           ./k6 run examples/script.js
-          

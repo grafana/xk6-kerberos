@@ -3,5 +3,17 @@
   "extends": [
     "github>grafana/grafana-renovate-config//presets/k6/k6-engine-base.json",
     "github>grafana/grafana-renovate-config//presets/k6/k6-engine-automerge.json"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update xk6 installed by CI workflows",
+      "managerFilePatterns": ["/^\\.github/workflows/.*\\.ya?ml$/"],
+      "matchStrings": [
+        "go install go\\.k6\\.io/xk6/cmd/xk6@(?<currentValue>v[\\d.]+)"
+      ],
+      "depNameTemplate": "go.k6.io/xk6",
+      "datasourceTemplate": "go"
+    }
   ]
 }
