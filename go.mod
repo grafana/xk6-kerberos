@@ -4,14 +4,14 @@ go 1.26.0
 
 require (
 	github.com/grafana/gokrb5/v8 v8.0.0-20240530081837-d6c270e54f7f
-	github.com/grafana/sobek v0.0.0-20260429085637-a66d4790012b
-	go.k6.io/k6 v1.8.1
+	github.com/grafana/sobek v0.0.0-20260727154728-7781506a890f
+	go.k6.io/k6 v1.8.2
 )
 
 require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dlclark/regexp2 v1.12.0 // indirect
+	github.com/dlclark/regexp2/v2 v2.5.2 // indirect
 	github.com/evanw/esbuild v0.27.2 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
